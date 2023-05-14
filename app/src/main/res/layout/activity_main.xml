@@ -14,7 +14,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:elevation="4dp"
+            app:navigationIcon="@drawable/ic_menu"
             android:background="@color/green"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
