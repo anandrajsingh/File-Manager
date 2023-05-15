@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.filemanager.Fragments.CardFragment
@@ -34,7 +35,14 @@ class MainActivity : AppCompatActivity() {
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
 
+        supportActionBar?.setDefaultDisplayHomeAsUpEnabled(true)
+
+        supportFragmentManager.beginTransaction().replace(R.id.fragment_container, HomeFragment())
+            .commit()
+        navView.setCheckedItem(R.id.nav_home)
+
         navView.setNavigationItemSelectedListener {
+            it.isChecked = true
             when(it.itemId){
                 R.id.nav_home -> replaceFragment(HomeFragment(), it.title.toString())
                 R.id.nav_internal -> replaceFragment(InternalFragment(), it.title.toString())
@@ -44,16 +52,16 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        supportActionBar?.setDefaultDisplayHomeAsUpEnabled(true)
-        navView.setCheckedItem(R.id.nav_home)
 
     }
 
-    private fun replaceFragment(fragment: Fragment, toString: String) {
+    private fun replaceFragment(fragment: Fragment, title: String) {
         val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.replace(R.id.fragment_container, fragment)
         fragmentTransaction.commit()
+        drawerLayout.closeDrawers()
+        setTitle(title)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -61,6 +69,13 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }
+        super.onBackPressed()
     }
 
 }
