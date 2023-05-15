@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import java.io.File
 import android.text.format.Formatter
 
-class FileAdapter(private val fileList: ArrayList<File>,private val context: Context, private val onFileSelectedListener: OnFileSelectedListener):
+class FileAdapter(private val fileList: List<File>,private val context: Context, private val onFileSelectedListener: OnFileSelectedListener):
     RecyclerView.Adapter<FileAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
