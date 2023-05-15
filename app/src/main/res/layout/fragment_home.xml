@@ -22,6 +22,7 @@
             android:orientation="horizontal">
             
             <LinearLayout
+                android:id="@+id/linearImage"
                 android:layout_weight="1"
                 android:orientation="vertical"
                 android:layout_width="0dp"

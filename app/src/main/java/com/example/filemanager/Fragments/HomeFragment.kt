@@ -33,7 +33,18 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         view = inflater.inflate(R.layout.fragment_home, container, false)
 
-        linearImage = view.findViewById(R.id.)
+        linearImage = view.findViewById(R.id.linearImage)
+        linearVideo = view.findViewById(R.id.linearVideo)
+        linearMusic = view.findViewById(R.id.linearMusic)
+        linearDocs = view.findViewById(R.id.linearDocs)
+        linearDownloads = view.findViewById(R.id.linearDownloads)
+        linearApks = view.findViewById(R.id.linearApk)
+
+        linearImage.setOnClickListener{
+            val bundle = Bundle()
+            bundle.putString("filetype", "image")
+            val categorizedFragment = Ca
+        }
 
         return view
     }
