@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
@@ -49,12 +50,13 @@ class CategorizedFragment : Fragment(), OnFileSelectedListener {
     val items = arrayOf("Details", "Rename", "Delete", "Share")
     private lateinit var path: File
 
-    lateinit var view: View
+    lateinit var view1: View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        view = inflater.inflate(R.layout.fragment_categorized, container, false)
+        view1 = inflater.inflate(R.layout.fragment_categorized, container, false)
+
         val bundle = this.arguments
         if (bundle!!.getString("fileType") == "download") {
             path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
@@ -64,7 +66,7 @@ class CategorizedFragment : Fragment(), OnFileSelectedListener {
 
         runTimePermissions()
 
-        return view
+        return view1
     }
 
     private fun runTimePermissions(){
@@ -155,7 +157,7 @@ class CategorizedFragment : Fragment(), OnFileSelectedListener {
     }
 
     private fun displayFiles() {
-        recyclerView = view.findViewById(R.id.recycler_internal)
+        recyclerView = view1.findViewById(R.id.recycler_internal)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = GridLayoutManager(context, 1)
         fileList = ArrayList()
@@ -173,11 +175,8 @@ class CategorizedFragment : Fragment(), OnFileSelectedListener {
             fragmentManager?.beginTransaction()?.replace(R.id.fragment_container, internalFragment)?.addToBackStack(null)?.commit()
         }else{
             try {
-                context.let {
-                    if (it != null) {
-                    }
-                }
-            }catch (e:IOException){
+                context?.let { FileOpener.openFile(it, file) }
+            } catch (e: IOException) {
                 e.printStackTrace()
             }
         }
@@ -190,7 +189,6 @@ class CategorizedFragment : Fragment(), OnFileSelectedListener {
         val options = optionDialog.findViewById<ListView>(R.id.list)
 
         val customAdapter = CustomAdapter()
-
         options.adapter = customAdapter
         optionDialog.show()
 
@@ -235,8 +233,6 @@ class CategorizedFragment : Fragment(), OnFileSelectedListener {
                         if (current.renameTo(destination)) {
                             (fileList as ArrayList)[position] = destination
                             fileAdapter.notifyItemChanged(position)
-//                            fileAdapter.notifyItemRemoved(position)
-//                            fileAdapter.notifyItemInserted(position)
                             Toast.makeText(context, "Renamed!", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(context, "Couldn't rename!", Toast.LENGTH_SHORT).show()
@@ -295,15 +291,28 @@ class CategorizedFragment : Fragment(), OnFileSelectedListener {
         }
 
         override fun getItem(p0: Int): Any {
-            TODO("Not yet implemented")
+            return items[p0]
         }
 
         override fun getItemId(p0: Int): Long {
-            TODO("Not yet implemented")
+            return 0;
         }
 
-        override fun getView(p0: Int, p1: View?, p2: ViewGroup?): View {
-            TODO("Not yet implemented")
+        override fun getView(position: Int, p1: View?, p2: ViewGroup?): View {
+            val myView = getLayoutInflater().inflate(R.layout.option_layout, null)
+            val txtOptions = myView.findViewById<TextView>(R.id.txt_option)
+            val imgOptions = myView.findViewById<ImageView>(R.id.img_option)
+
+            txtOptions.text = items[position]
+
+            when (items[position]) {
+                "Details" -> imgOptions.setImageResource(R.drawable.ic_details)
+                "Rename" -> imgOptions.setImageResource(R.drawable.ic_rename)
+                "Delete" -> imgOptions.setImageResource(R.drawable.ic_delete)
+                "Share" -> imgOptions.setImageResource(R.drawable.ic_share)
+            }
+
+            return myView
         }
 
     }

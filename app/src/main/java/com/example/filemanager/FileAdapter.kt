@@ -24,7 +24,7 @@ class FileAdapter(private val fileList: List<File>,private val context: Context,
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.tvName.text = fileList.get(position).name
         holder.tvName.isSelected
-        var items: Int = 0
+        var items = 0
 
         if(fileList.get(position).isDirectory){
             val files = fileList.get(position).listFiles()
@@ -33,7 +33,7 @@ class FileAdapter(private val fileList: List<File>,private val context: Context,
                     items++
                 }
             }
-            holder.tvFileSize.text = items.toString()+"Files"
+            holder.tvFileSize.text = "$items Files"
         }else{
             holder.tvFileSize.text = Formatter.formatShortFileSize(context, fileList.get(position).length())
         }
@@ -63,6 +63,6 @@ class FileAdapter(private val fileList: List<File>,private val context: Context,
         val imageFile: ImageView = itemView.findViewById(R.id.img_fileType)
         val tvName: TextView = itemView.findViewById(R.id.tv_fileName)
         val tvFileSize: TextView = itemView.findViewById(R.id.tv_fileSize)
-        val cardView: CardView = itemView.findViewById(com.karumi.dexter.R.id.container)
+        val cardView: CardView = itemView.findViewById(R.id.file_container)
     }
 }
